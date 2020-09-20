@@ -4,12 +4,14 @@
 %}
 %option noyywrap
 
-v4 "WRITE YOUR REGULAR EXPRESSIONS HERE"
-v6 "ADD ANY SUB-PATTERNS AS YOU WANT"
+IPv6_first_digit    [1-9a-fA-F]
+IPv6_rest_digit     [0-9a-fA-F]{0,3}
+v4 ((([1-9]{0,1}[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([1-9]{0,1}[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))
+v6 (([0-9a-fA-F]{1,4}):){7}[0-9a-fA-F]{1,4}
 
 %%
-{v4} { indicator = 4; }
-{v6} { indicator = 6; }
+^{v4}$ { indicator = 4; }
+^{v6}$ { indicator = 6; }
 <<EOF>> {
     if(indicator == 4)
         addr_type = "IPv4";
